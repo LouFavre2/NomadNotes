@@ -2,7 +2,10 @@
 export default {
   content: [
     "./index.html",
-    "Frontend/src/components/HelloWorld.vue"
+    "src/App.vue",
+    "src/pages/Home.vue",
+    "src/pages/Signup.vue",
+    "src/pages/Login.vue"
   ],
   theme: {
     extend: {},
@@ -21,11 +24,11 @@ export default {
       'white': '#ffffff',
       'black': '#2F2F2F',
       'gray': '#4F4E4E',
-      'medium-gray': '#848484',
-      'light-gray': '#DBDBDB',
+      'medium-gray': '#6D7877',
+      'light-gray': '#99AAA9',
       'base': '#E8F3F3',
       'primary': '#70DAD3',
-      'dark': '#D3E1EE',
+      'dark': '#3B4948',
       'accent': '#EC8C6F',
     },
     borderRadius: {
