@@ -3,9 +3,12 @@ export default {
   content: [
     "./index.html",
     "src/App.vue",
+    "src/components/Nav.vue",
     "src/pages/Home.vue",
     "src/pages/Signup.vue",
-    "src/pages/Login.vue"
+    "src/pages/Login.vue",
+    "src/pages/Map.vue",
+    "src/pages/Places.vue"
   ],
   theme: {
     extend: {},
@@ -36,8 +39,9 @@ export default {
       DEFAULT: '0.25rem',
       DEFAULT: '4px',
       'sm': '0.5rem',
-      'md': '1rem',
-      'lg': '3rem',
+      'md': '1.5rem',
+      'lg': '2.5rem',
+      'xl': '4rem',
       'full': '9999px',
     },
   },
