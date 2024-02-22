@@ -18,18 +18,18 @@ class Place
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'float', precision: 10, scale: 8)]
+    #[ORM\Column]
     private ?float $latitude = null;
 
-    #[ORM\Column(type: 'float', precision: 10, scale: 8)]
+    #[ORM\Column]
     private ?float $longitude = null;
 
-    #[ORM\OneToMany(targetEntity: PlaceMemo::class, mappedBy: 'place')]
-    private Collection $placeMemos;
+    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'place')]
+    private Collection $memos;
 
     public function __construct()
     {
-        $this->placeMemos = new ArrayCollection();
+        $this->memos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,29 +74,29 @@ class Place
     }
 
     /**
-     * @return Collection<int, PlaceMemo>
+     * @return Collection<int, Memo>
      */
-    public function getPlaceMemos(): Collection
+    public function getMemos(): Collection
     {
-        return $this->placeMemos;
+        return $this->memos;
     }
 
-    public function addPlaceMemo(PlaceMemo $placeMemo): static
+    public function addMemo(Memo $memo): static
     {
-        if (!$this->placeMemos->contains($placeMemo)) {
-            $this->placeMemos->add($placeMemo);
-            $placeMemo->setPlace($this);
+        if (!$this->memos->contains($memo)) {
+            $this->memos->add($memo);
+            $memo->setPlace($this);
         }
 
         return $this;
     }
 
-    public function removePlaceMemo(PlaceMemo $placeMemo): static
+    public function removeMemo(Memo $memo): static
     {
-        if ($this->placeMemos->removeElement($placeMemo)) {
+        if ($this->memos->removeElement($memo)) {
             // set the owning side to null (unless already changed)
-            if ($placeMemo->getPlace() === $this) {
-                $placeMemo->setPlace(null);
+            if ($memo->getPlace() === $this) {
+                $memo->setPlace(null);
             }
         }
 

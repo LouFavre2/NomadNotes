@@ -17,7 +17,7 @@ class Photo
     private ?string $path = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
-    private ?PlaceMemo $memo = null;
+    private ?Memo $memoRelated = null;
 
     public function getId(): ?int
     {
@@ -36,14 +36,14 @@ class Photo
         return $this;
     }
 
-    public function getMemo(): ?PlaceMemo
+    public function getMemoRelated(): ?Memo
     {
-        return $this->memo;
+        return $this->memoRelated;
     }
 
-    public function setMemo(?PlaceMemo $memo): static
+    public function setMemoRelated(?Memo $memoRelated): static
     {
-        $this->memo = $memo;
+        $this->memoRelated = $memoRelated;
 
         return $this;
     }

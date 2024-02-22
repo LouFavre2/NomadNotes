@@ -2,33 +2,33 @@
 
 namespace App\Entity;
 
-use App\Repository\PlaceMemoRepository;
+use App\Repository\MemoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PlaceMemoRepository::class)]
-class PlaceMemo
+#[ORM\Entity(repositoryClass: MemoRepository::class)]
+class Memo
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'placeMemos')]
-    private ?user $user = null;
+    #[ORM\ManyToOne(inversedBy: 'memos')]
+    private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'placeMemos')]
-    private ?place $place = null;
+    #[ORM\ManyToOne(inversedBy: 'memos')]
+    private ?Place $place = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $note = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $visited_date = null;
 
-    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'memo')]
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'memoRelated')]
     private Collection $photos;
 
     public function __construct()
@@ -41,24 +41,24 @@ class PlaceMemo
         return $this->id;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getPlace(): ?place
+    public function getPlace(): ?Place
     {
         return $this->place;
     }
 
-    public function setPlace(?place $place): static
+    public function setPlace(?Place $place): static
     {
         $this->place = $place;
 
@@ -70,7 +70,7 @@ class PlaceMemo
         return $this->note;
     }
 
-    public function setNote(string $note): static
+    public function setNote(?string $note): static
     {
         $this->note = $note;
 
@@ -101,7 +101,7 @@ class PlaceMemo
     {
         if (!$this->photos->contains($photo)) {
             $this->photos->add($photo);
-            $photo->setMemo($this);
+            $photo->setMemoRelated($this);
         }
 
         return $this;
@@ -111,8 +111,8 @@ class PlaceMemo
     {
         if ($this->photos->removeElement($photo)) {
             // set the owning side to null (unless already changed)
-            if ($photo->getMemo() === $this) {
-                $photo->setMemo(null);
+            if ($photo->getMemoRelated() === $this) {
+                $photo->setMemoRelated(null);
             }
         }
 
