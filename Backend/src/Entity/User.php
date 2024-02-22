@@ -20,8 +20,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
 
     /**
      * @var string The hashed password
@@ -35,12 +35,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
-    #[ORM\OneToMany(targetEntity: PlaceMemo::class, mappedBy: 'user')]
-    private Collection $placeMemos;
+    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'user')]
+    private Collection $memos;
 
     public function __construct()
     {
-        $this->placeMemos = new ArrayCollection();
+        $this->memos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,6 +68,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    /**
+     * Methode pour l'authentification
+     */
+    public function getUsername(): string {
+        return $this->getUserIdentifier();
     }
 
     /**
@@ -138,32 +145,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, PlaceMemo>
+     * @return Collection<int, Memo>
      */
-    public function getPlaceMemos(): Collection
+    public function getMemos(): Collection
     {
-        return $this->placeMemos;
+        return $this->memos;
     }
 
-    public function addPlaceMemo(PlaceMemo $placeMemo): static
+    public function addMemo(Memo $memo): static
     {
-        if (!$this->placeMemos->contains($placeMemo)) {
-            $this->placeMemos->add($placeMemo);
-            $placeMemo->setUser($this);
+        if (!$this->memos->contains($memo)) {
+            $this->memos->add($memo);
+            $memo->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePlaceMemo(PlaceMemo $placeMemo): static
+    public function removeMemo(Memo $memo): static
     {
-        if ($this->placeMemos->removeElement($placeMemo)) {
+        if ($this->memos->removeElement($memo)) {
             // set the owning side to null (unless already changed)
-            if ($placeMemo->getUser() === $this) {
-                $placeMemo->setUser(null);
+            if ($memo->getUser() === $this) {
+                $memo->setUser(null);
             }
         }
 
         return $this;
     }
+
 }
