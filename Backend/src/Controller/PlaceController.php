@@ -91,6 +91,13 @@ class PlaceController extends AbstractController
             return new JsonResponse(['message' => 'Lieu non trouvé'], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        foreach ($place->getMemos() as $memo) {
+            foreach ($memo->getPhotos() as $photo) {
+                $em->remove($photo);
+            }
+            $em->remove($memo);
+        }
+
         $em->remove($place);
         $em->flush();
 
