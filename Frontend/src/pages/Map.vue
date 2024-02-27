@@ -11,7 +11,7 @@
 				<l-marker v-for="(memo, index) in MemoVoyage" :key="index"  :lat-lng="memo.endroit" draggable>
 					<l-popup><p>Visité le {{ memo.date_visite }}</p>
 					{{ memo.description }}
-					<star-rating :show-rating="false" v-model:rating="memo.note" read-only star-size="20" ></star-rating>
+					<star-rating :show-rating="false" v-model:rating="memo.note" read-only :star-size=20	 ></star-rating>
 					<button>Modifier</button>
 					<button>Supprimer</button></l-popup>
 				</l-marker>
@@ -25,6 +25,8 @@ import "leaflet/dist/leaflet.css";
 import { LMap, LMarker, LTileLayer, LPopup } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
 import StarRating from 'vue-star-rating'
+import $ from "jquery";
+import MapDataServices from '../services/MapDataServices'
 export default {
   components: {
     LMap,
@@ -55,11 +57,21 @@ export default {
         description: ""
       }
     };
-  },
-  methods: {
-    onMapClick(e) {
-      var popupContent = `
-    <form @submit.prevent="submitForm">
+},
+  /*mounted() {
+    MapDataServices.getPlaces().then(response => {
+        console.log(response.data)
+    })
+  },*/
+methods: {
+	submitForm() {
+	  console.log("ok")
+	  console.log("Formulaire soumis :", this.formData)
+	},
+	onMapClick(e) {
+	var self = this;
+    var popupContent = `
+    <form ref="form"id="form" @submit.prevent="this.submitForm">
       <div>
         <label for="nom">Nom :</label>
         <input type="text" id="nom" v-model="formData.nom" required>
@@ -78,20 +90,22 @@ export default {
       </div>
 
       <div>
-        <button type="button" @click="submitForm">Soumettre</button>
+        <button type="submit">Soumettre</button>
       </div>
     </form>
   `;
-    //alert("You clicked the map at " + e.latlng);
-    var popup = L.popup()
-    .setLatLng(e.latlng)
-    .setContent(popupContent)
-    .openOn(e.target);
-  },
-  submitForm() {
-    console.log("ok")
-    console.log("Formulaire soumis :", this.formData)
-  },
+  //alert("You clicked the map at " + e.latlng);
+  var popup = L.popup()
+  .setLatLng(e.latlng)
+  .setContent(popupContent)
+  .openOn(e.target);
+  // Ajouter un écouteur d'événement jQuery sur la soumission du formulaire
+  $("#form").submit(function(e) {
+  e.preventDefault();
+  console.log("La méthode submitForm a été appelée !");
+  console.log("Formulaire soumis :", self.formData);
+  });
+},
 
   }
 };
