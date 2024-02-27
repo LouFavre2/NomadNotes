@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Memo;
+use App\Entity\Photo;
 use App\Entity\Place;
 use App\Repository\PlaceRepository;
 use DateTime;
@@ -63,7 +64,13 @@ class PlaceController extends AbstractController
         $memo->setUser($this->getUser());
         $memo->setPlace($place);
         $memo->setNote($data['note']);
-        //$memo->setVisitedDate(new DateTime($data['date_visite']));
+        $memo->setVisitedDate(new DateTime($data['date_visite']));
+
+        foreach ($data['photos'] as $photoLink) {
+            $photo = new Photo();
+            $photo->setPath($photoLink);
+            $memo->addPhoto($photo);
+        }
 
         $em->persist($place);
         $em->persist($memo);
