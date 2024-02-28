@@ -58,11 +58,11 @@ export default {
       }
     };
 },
-  /*mounted() {
+  mounted() {
     MapDataServices.getPlaces().then(response => {
         console.log(response.data)
     })
-  },*/
+  },
 methods: {
 	submitForm() {
 	  console.log("ok")
