@@ -8,16 +8,40 @@
 					name="OpenStreetMap"
 					:minZoom="zoom"
 				></l-tile-layer>
-				<l-marker v-for="(memo, index) in MemoVoyage" :key="index"  :lat-lng="memo.endroit" draggable>
-					<l-popup><p>Visité le {{ memo.date_visite }}</p>
-					{{ memo.description }}
-					<star-rating :show-rating="false" v-model:rating="memo.note" read-only :star-size=20	 ></star-rating>
-					<button>Modifier</button>
+				<l-marker v-for="(memo, index) in MemoVoyage" :key="index"  :lat-lng="[memo.latitude, memo.longitude]" draggable>
+					<l-popup><p>{{ memo.name }}</p>
+            <!--<p>Visité le {{ memo.date_visite }}</p>
+					{{ memo.note }}-->
 					<button>Supprimer</button></l-popup>
 				</l-marker>
 			</l-map>
 		</div>
-	</div>
+  <form class="p-4 bg-gray-200" v-if="showForm">
+      <div class="mt-2">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" v-model="this.formData.name" required>
+      </div>
+      <div class="mt-2">
+        <label for="date_visite">Date de visite :</label>
+        <input type="date" id="date_visite" v-model="this.formData.date_visite" required>
+      </div>
+      <div class="mt-2" v-for="(photo, index) in formData.photos" :key="index">
+        <label :for="'photo_' + index">Photo :</label>
+        <input type="text" :id="'photo_' + index" v-model="formData.photos[index]" required>
+        <button type="button" @click="removePhoto(index)"> Supprimer</button>
+      </div>
+      <div class="mt-2">
+        <button type="button" @click="addPhoto">Ajouter une photo</button>
+      </div>
+      <div class="mt-2">
+        <label for="note">Note: </label>
+        <textarea id="note" v-model="this.formData.note" required></textarea>
+      </div>
+      <div class="mt-2">
+        <button type="button" @click="submitForm">Soumettre</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -25,7 +49,6 @@ import "leaflet/dist/leaflet.css";
 import { LMap, LMarker, LTileLayer, LPopup } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
 import StarRating from 'vue-star-rating'
-import $ from "jquery";
 import MapDataServices from '../services/MapDataServices'
 export default {
   components: {
@@ -38,75 +61,58 @@ export default {
   data() {
     return {
       zoom: 6,
-      MemoVoyage: [{
-		"description": "Ceci est une description",
-        "note": 5,
-        "date_visite" : "02/02/2018",
-        "endroit" : [45.8566, 2.3522]
-      },
-      {
-		"description": "Description",
-        "note": 2,
-        "date_visite" : "02/03/2018",
-        "endroit" : [48.8566, 4.3522]
-      }],
+      MemoVoyage: [],
+      addPhoto() {
+      this.formData.photos.push("");
+    },
+    removePhoto(index) {
+      this.formData.photos.splice(index, 1);
+    },
     formData: {
-        nom: "",
-        dateVisite: "",
-        note: null,
-        description: ""
-      }
+        name: "",
+        date_visite: "",
+        note: "",
+        photos: [""]
+      },
+      latitude: 0,
+      longitude: 0,
+      currentMarker: null,
+      showForm: false
     };
 },
   mounted() {
     MapDataServices.getPlaces().then(response => {
-        console.log(response.data)
-    })
+        console.log(response.data[0])
+        this.MemoVoyage = response.data[0]
+        console.log(response.data[0])
+    }).catch(error => {
+    console.error('Erreur lors de la récupération des données:', error);
+  });
   },
 methods: {
-	submitForm() {
-	  console.log("ok")
-	  console.log("Formulaire soumis :", this.formData)
-	},
-	onMapClick(e) {
-	var self = this;
-    var popupContent = `
-    <form ref="form"id="form" @submit.prevent="this.submitForm">
-      <div>
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" v-model="formData.nom" required>
-      </div>
-      <div>
-        <label for="dateVisite">Date de visite :</label>
-        <input type="date" id="dateVisite" v-model="formData.dateVisite" required>
-      </div>
-      <div>
-        <label for="note">Note :</label>
-        <input type="number" id="note" v-model="formData.note" min="0" max="10" required>
-      </div>
-      <div>
-        <label for="description">Description :</label>
-        <textarea id="description" v-model="formData.description" required></textarea>
-      </div>
+  submitForm() {
+    console.log("ça marche")
+    console.log({...this.formData, latitude: this.latitude, longitude: this.longitude })
+    MapDataServices.addPlace({...this.formData, latitude: this.latitude, longitude: this.longitude })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+  },
+  onMapClick(e) {
+    this.latitude=e.latlng.lat
+    this.longitude=e.latlng.lng
+    console.log(this.latitude, this.longitude)
+    if (this.currentMarker) {
+        this.currentMarker.removeFrom(e.target);
+      }
 
-      <div>
-        <button type="submit">Soumettre</button>
-      </div>
-    </form>
-  `;
-  //alert("You clicked the map at " + e.latlng);
-  var popup = L.popup()
-  .setLatLng(e.latlng)
-  .setContent(popupContent)
-  .openOn(e.target);
-  // Ajouter un écouteur d'événement jQuery sur la soumission du formulaire
-  $("#form").submit(function(e) {
-  e.preventDefault();
-  console.log("La méthode submitForm a été appelée !");
-  console.log("Formulaire soumis :", self.formData);
-  });
-},
-
+      // Créer un nouveau marqueur aux nouvelles coordonnées
+      this.currentMarker = L.marker(e.latlng).addTo(e.target);
+      this.showForm=true;
   }
+}
 };
 </script>
