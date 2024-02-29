@@ -11,7 +11,12 @@ An app to save your travel memories
 
 # TO RUN BACKEND IN DEV
 
-...
+1) composer install
+2) Create an .env.local file with your local settings for the MySQL DB
+3) php bin/console doctrine:database:create
+4) php bin/console doctrine:migrations:migrate
+5) php bin/console lexik:jwt:generate-keypair
+6) symfony serve
 
 # TO RUN FRONTEND IN DEV
 
