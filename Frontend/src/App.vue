@@ -13,6 +13,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default defineComponent({
   name: "App",
+  components: {
+    Nav,
+    RouterView,
+  },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -44,16 +48,16 @@ export default defineComponent({
         } else {
           console.error("Cannot obtain the session data");
           localStorage.removeItem("jwt");
-          return router.push({ name: "Login" });
+          // return router.push({ name: "Login" });
         }
 
-        if (route.name == "Signup" || route.name == "Login") {
-          return router.push({ name: "Home" });
-        }
+        // if (route.name == "Signup" || route.name == "Login") {
+        //   return router.push({ name: "Home" });
+        // }
       } catch (error) {
         localStorage.removeItem("jwt");
         console.error(error);
-        return router.push({ name: "Login" });
+        // return router.push({ name: "Login" });
       }
     };
 
