@@ -30,6 +30,7 @@ class PlaceController extends AbstractController
         $placesData = [];
         foreach ($places as $place) {
             $placesData[] = [
+                'id' => $place->getId(),
                 'name' => $place->getName(),
                 'latitude' => $place->getLatitude(),
                 'longitude' => $place->getLongitude(),
