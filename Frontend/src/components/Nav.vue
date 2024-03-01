@@ -76,21 +76,29 @@
         </li>
       </ul>
       <div class="absolute bottom-8 left-5">
-        <router-link to="/" class="text-dark">
+        <button class="text-dark" @click="sessionValue.logout()">
           <i class="fa-solid fa-right-from-bracket text-4xl"></i>
-        </router-link>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 export default {
   setup() {
+    // Inject
+    const sessionValue = inject("session");
+
     let showMenu = ref(false);
     const toggleNav = () => (showMenu.value = !showMenu.value);
-    return { showMenu, toggleNav };
+
+    return {
+      showMenu,
+      toggleNav,
+      sessionValue
+    };
   },
 };
 </script>

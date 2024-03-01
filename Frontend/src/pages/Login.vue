@@ -121,12 +121,12 @@ export default {
             password,
           }
         );
-        if (!data.accessToken)
+        if (!data.token)
           return (textError.value =
             "Une erreur s'est produite lors de la connexion, réessayez plus tard.");
 
         // Update session value and redirect to dashboard
-        localStorage.setItem("jwt", data.accessToken);
+        localStorage.setItem("jwt", data.token);
         isLoading.value = false;
         sessionValue.active();
       } catch (error) {

@@ -4,12 +4,10 @@
 </template>
 
 <script>
-import { ref, computed, defineComponent, provide, onMounted } from "vue";
+import { ref, defineComponent, provide, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { RouterView } from 'vue-router';
 import Nav from '/src/components/Nav.vue'
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default defineComponent({
   name: "App",
@@ -24,12 +22,8 @@ export default defineComponent({
 
     // Functions
     const onLogout = async () => {
-      const jwt = localStorage.getItem("jwt");
       try {
-        await axios.get(`${API_URL}/logout`, {
-          headers: { Authorization: `Bearer ${jwt}` },
-        });
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        localStorage.removeItem("jwt");
         isActiveSession();
       } catch (error) {
         console.error(error);
@@ -37,27 +31,24 @@ export default defineComponent({
     };
 
     const isActiveSession = async () => {
-      const jwt = localStorage.getItem("jwt");
       try {
-        const { data } = await axios.get(`${API_URL}/auth/user`, {
-          headers: { Authorization: `Bearer ${jwt}` },
-        });
+        const jwt = localStorage.getItem("jwt");
 
-        if (data) {
-          session.value = data;
-        } else {
+        if (!jwt) {
           console.error("Cannot obtain the session data");
           localStorage.removeItem("jwt");
-          // return router.push({ name: "Login" });
+          return router.push({ name: "Login" });
+        } else {
+          session.value = true;
         }
 
-        // if (route.name == "Signup" || route.name == "Login") {
-        //   return router.push({ name: "Home" });
-        // }
+        if (route.name == "Signup" || route.name == "Login") {
+          return router.push({ name: "Home" });
+        }
       } catch (error) {
         localStorage.removeItem("jwt");
         console.error(error);
-        // return router.push({ name: "Login" });
+        return router.push({ name: "Login" });
       }
     };
 
@@ -65,7 +56,6 @@ export default defineComponent({
     provide("session", {
       get: () => {
         return {
-          session: computed(() => session.value),
           active: isActiveSession(),
         };
       },

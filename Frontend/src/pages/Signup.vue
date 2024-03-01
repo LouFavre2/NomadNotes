@@ -152,20 +152,22 @@ export default {
         const { data } = await axios.post(
           `${import.meta.env.VITE_API_URL}/register`,
           {
-            name,
+            firstname: name,
             lastname,
             email,
             password,
           }
         );
-        if (!data.accessToken)
+        if (!data)
           return (textError.value =
             "Une erreur s'est produite lors de l'inscription, réessayez plus tard.");
+        textError.value =
+          "Vos données ont été correctement enregistrées, vous pouvez maintenant vous connecter.";
 
         // Update session value and redirect to home
-        localStorage.setItem("jwt", data.accessToken);
         isLoading.value = false;
-        sessionValue.active();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        return router.push({ name: "Login"})
       } catch (error) {
         console.error(error);
         isLoading.value = false;
