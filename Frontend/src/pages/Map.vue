@@ -83,7 +83,7 @@ export default {
       latitude: 0,
       longitude: 0,
       currentMarker: null,
-      showForm: false,
+      showForm: false
     };
 },
   mounted() {
@@ -111,22 +111,33 @@ export default {
 
   },
 methods: {
-  /*getPicture(e) {
-    MapDataServices.getPlaceDetailed(e).then((response) => {
-      console.log(response.data[0])
-      console.log(response.data[0].memo.photos[0].url)
-      return response.data[0].memo.photos[0].url
-    })
-    .catch((e) => {
-      console.log(e)
-  })
-  },*/
   submitForm() {
     console.log("ça marche")
     console.log({...this.formData, latitude: this.latitude, longitude: this.longitude })
     MapDataServices.addPlace({...this.formData, latitude: this.latitude, longitude: this.longitude })
         .then((response) => {
           console.log(response.data);
+          MapDataServices.getPlaces().then(response => {
+        console.log(response.data[0])
+        this.MemoVoyage = response.data[0]
+        console.log(response.data[0])
+
+        this.MemoVoyage.forEach(element => {
+          MapDataServices.getPlaceDetailed(element.id).then((response) => {
+
+            element.url = response.data[0].memo.photos[0].url;
+          })
+          .catch((e) => {
+            console.log(e)
+        })
+          
+        });
+        console.log(this.MemoVoyage)
+
+
+    }).catch(error => {
+    console.error('Erreur lors de la récupération des données:', error);
+  });
         })
         .catch((e) => {
           console.log(e);
