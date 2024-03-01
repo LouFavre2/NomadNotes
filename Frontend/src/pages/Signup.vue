@@ -119,9 +119,6 @@ export default {
   setup() {
     const router = useRouter();
 
-    // Inject
-    const sessionValue = inject("session");
-
     const isLoading = ref(false);
     const dataForm = ref({
       name: "",
