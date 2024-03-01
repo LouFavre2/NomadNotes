@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { ref, defineComponent, provide, onMounted } from "vue";
+import { ref, defineComponent, provide, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { RouterView } from 'vue-router';
 import Nav from '/src/components/Nav.vue'
@@ -37,6 +37,7 @@ export default defineComponent({
         if (!jwt) {
           console.error("Cannot obtain the session data");
           localStorage.removeItem("jwt");
+          if (route.name == "Signup" || route.name == "Login") return
           return router.push({ name: "Login" });
         } else {
           session.value = true;
@@ -48,6 +49,7 @@ export default defineComponent({
       } catch (error) {
         localStorage.removeItem("jwt");
         console.error(error);
+        if (route.name == "Signup" || route.name == "Login") return
         return router.push({ name: "Login" });
       }
     };
@@ -63,8 +65,8 @@ export default defineComponent({
       active: isActiveSession,
     });
 
-    onMounted(() => {
-      isActiveSession();
+    watch(route, () => {
+      isActiveSession()
     });
   },
 });
