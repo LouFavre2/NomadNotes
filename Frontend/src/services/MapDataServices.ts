@@ -5,6 +5,9 @@ class MapDataService {
     getPlaces() {
         return http.get("/places");
       }
+    getPlaceDetailed(id) {
+      return http.get(`/places/${id}`) 
+    } 
     addPlace(data: any) {
       return http.post("/places", data)
     }

@@ -8,8 +8,14 @@
 					name="OpenStreetMap"
 					:minZoom="zoom"
 				></l-tile-layer>
-				<l-marker v-for="(memo, index) in MemoVoyage" :key="index"  :lat-lng="[memo.latitude, memo.longitude]" draggable>
-					<l-popup><p>{{ memo.name }}</p>
+				<l-marker v-for="(memo, index) in MemoVoyage" :key="index" :id="memo.id" :lat-lng="[memo.latitude, memo.longitude]">
+					<l-popup>
+            <div class="flex justify-center">
+            <img class="rounded-md"
+              :src="memo.url"
+              alt="image_memo"
+            /></div>
+            <div class="font-bold text-lg">{{ memo.name }}</div>
             <!--<p>Visité le {{ memo.date_visite }}</p>
 					{{ memo.note }}-->
 					<button>Supprimer</button></l-popup>
@@ -77,7 +83,7 @@ export default {
       latitude: 0,
       longitude: 0,
       currentMarker: null,
-      showForm: false
+      showForm: false,
     };
 },
   mounted() {
@@ -85,11 +91,36 @@ export default {
         console.log(response.data[0])
         this.MemoVoyage = response.data[0]
         console.log(response.data[0])
+
+        this.MemoVoyage.forEach(element => {
+          MapDataServices.getPlaceDetailed(element.id).then((response) => {
+
+            element.url = response.data[0].memo.photos[0].url;
+          })
+          .catch((e) => {
+            console.log(e)
+        })
+          
+        });
+        console.log(this.MemoVoyage)
+
+
     }).catch(error => {
     console.error('Erreur lors de la récupération des données:', error);
   });
+
   },
 methods: {
+  /*getPicture(e) {
+    MapDataServices.getPlaceDetailed(e).then((response) => {
+      console.log(response.data[0])
+      console.log(response.data[0].memo.photos[0].url)
+      return response.data[0].memo.photos[0].url
+    })
+    .catch((e) => {
+      console.log(e)
+  })
+  },*/
   submitForm() {
     console.log("ça marche")
     console.log({...this.formData, latitude: this.latitude, longitude: this.longitude })
@@ -116,3 +147,17 @@ methods: {
 }
 };
 </script>
+
+<style>
+.leaflet-popup-content-wrapper {
+
+    border-radius: 25px;
+}
+.leaflet-popup-content {
+    width: 200px;
+    max-width: 200px;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  width: 30px;
+}
+</style>
