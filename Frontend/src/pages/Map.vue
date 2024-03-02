@@ -1,7 +1,7 @@
 <template>
 	<div class="static w-full h-screen bg-base pt-40 p-10 md:pl-40 md:py-20 md:pr-20">
 		<div class="w-full h-full bg-dark rounded-lg">
-			<l-map @click="onMapClick" ref="map" v-model:zoom="zoom" :center="[47.00000, 1.79000]" :use-global-leaflet="false" :maxBounds="[[51.35835494003574, -5.503705],[42.221176970720435, 8.260966]]">
+			<l-map @click="onMapClick" ref="map" v-model:zoom="zoom" :min-zoom="6" :center="[47.00000, 1.79000]" :use-global-leaflet="false" :maxBounds="[[51.35835494003574, -5.503705],[42.221176970720435, 8.260966]]">
 				<l-tile-layer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					layer-type="base"
@@ -18,7 +18,7 @@
             <div class="font-bold text-lg">{{ memo.name }}</div>
             <!--<p>Visité le {{ memo.date_visite }}</p>
 					{{ memo.note }}-->
-					<button>Supprimer</button></l-popup>
+					<button @click="deletePlace(memo.id)">Supprimer</button></l-popup>
 				</l-marker>
 			</l-map>
 		</div>
@@ -68,18 +68,12 @@ export default {
     return {
       zoom: 6,
       MemoVoyage: [],
-      addPhoto() {
-      this.formData.photos.push("");
-    },
-    removePhoto(index) {
-      this.formData.photos.splice(index, 1);
-    },
-    formData: {
-        name: "",
-        date_visite: "",
-        note: "",
-        photos: [""]
-      },
+      formData: {
+          name: "",
+          date_visite: "",
+          note: "",
+          photos: [""]
+        },
       latitude: 0,
       longitude: 0,
       currentMarker: null,
@@ -111,33 +105,27 @@ export default {
 
   },
 methods: {
+  addPhoto() {
+    this.formData.photos.push("");
+  },
+  removePhoto(index) {
+    this.formData.photos.splice(index, 1);
+  },
+  deletePlace(id) {
+    MapDataServices.deletePlace(id).then((response) => {
+      console.log(response.data)
+      this.MemoVoyage = this.MemoVoyage.filter(item => item.id !== id);
+    })
+    .catch((e) => {
+      console.log(e);
+    })
+  },
   submitForm() {
-    console.log("ça marche")
     console.log({...this.formData, latitude: this.latitude, longitude: this.longitude })
     MapDataServices.addPlace({...this.formData, latitude: this.latitude, longitude: this.longitude })
         .then((response) => {
           console.log(response.data);
-          MapDataServices.getPlaces().then(response => {
-        console.log(response.data[0])
-        this.MemoVoyage = response.data[0]
-        console.log(response.data[0])
-
-        this.MemoVoyage.forEach(element => {
-          MapDataServices.getPlaceDetailed(element.id).then((response) => {
-
-            element.url = response.data[0].memo.photos[0].url;
-          })
-          .catch((e) => {
-            console.log(e)
-        })
-          
-        });
-        console.log(this.MemoVoyage)
-
-
-    }).catch(error => {
-    console.error('Erreur lors de la récupération des données:', error);
-  });
+          this.MemoVoyage.push({id: response.data.id, ...this.formData, latitude: this.latitude, longitude: this.longitude })
         })
         .catch((e) => {
           console.log(e);

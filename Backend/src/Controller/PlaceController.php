@@ -117,6 +117,7 @@ class PlaceController extends AbstractController
         $em->flush();
 
         return new JsonResponse([
+            'id' => $place->getId(),
             'message' => 'Nouveau lieu créé avec succès',
             JsonResponse::HTTP_CREATED
         ]);

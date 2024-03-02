@@ -11,6 +11,9 @@ class MapDataService {
     addPlace(data: any) {
       return http.post("/places", data)
     }
+    deletePlace(id) {
+      return http.delete(`/places/${id}`)
+    }
     getMemos() {
       return http.get("/memos");
     }
