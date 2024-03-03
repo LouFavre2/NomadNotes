@@ -241,9 +241,9 @@ export default {
           MapDataServices.getPlaceDetailed(element.id)
             .then((response) => {
               if(response.data[0].memo.photos && response.data[0].memo.photos.length > 0)
-            element.url = response.data[0].memo.photos[0].url;
+                element.url = response.data[0].memo.photos[0].url;
               else
-            element.url = '/src/assets/img/caravan.jpg';
+                element.url = '/src/assets/img/caravan.jpg';
             })
             .catch((e) => {
               console.log(e);
@@ -285,16 +285,20 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
+          if(this.formData.photos.length==0) {
+            this.formData.photos.push('/src/assets/img/caravan.jpg')
+          }
           this.MemoVoyage.push({
             id: response.data.id,
             ...this.formData,
             latitude: this.latitude,
             longitude: this.longitude,
+            url: this.formData.photos[0]
           });
           (this.formData.name = ""),
             (this.formData.date_visite = ""),
             (this.formData.note = ""),
-            (this.formData.photos = [""]);
+            (this.formData.photos = []);
         })
         .catch((e) => {
           console.log(e);
@@ -309,7 +313,7 @@ export default {
       }
 
       // Créer un nouveau marqueur aux nouvelles coordonnées
-      this.currentMarker = L.marker(e.latlng).addTo(e.target);
+      //this.currentMarker = L.marker(e.latlng).addTo(e.target);
       this.showForm = true;
     },
   },
