@@ -1,20 +1,22 @@
 <template>
   <div
-    class="fixed top-0 z-40 w-screen px-6 py-8 md:hidden rounded-b-md bg-white shadow-lg"
+    class="fixed top-0 z-40 w-screen px-6 py-2 md:hidden rounded-b-md bg-white shadow-lg"
   >
     <div class="flex items-center justify-between">
-      <router-link
-        to="/"
-        class="text-xl font-bold text-gray-100 md:text-2xl hover:text-indigo-400"
-        >Logo
-      </router-link>
+      <a href="/" class="flex items-center ps-2.5 my-2">
+        <img
+          src="/src/assets/img/logo-dark.png"
+          class="h-10 sm:h-10"
+          alt="Flowbite Logo"
+        />
+      </a>
       <!-- Mobile menu button -->
       <div @click="toggleNav" class="flex md:hidden">
         <button
           type="button"
           class="text-gray-100 hover:text-gray-400 focus:outline-none focus:text-gray-400"
         >
-          <img src="/src/assets/img/logo-dark.png" alt="logo" />
+        <i class="fa-solid fa-bars"></i>
         </button>
       </div>
     </div>
@@ -46,7 +48,7 @@
     aria-label="Sidebar"
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-      <a href="https://flowbite.com/" class="flex items-center ps-2.5 mb-5">
+      <a href="/" class="flex items-center ps-2.5 mb-5">
         <img
           src="/src/assets/img/logo-dark.png"
           class="h-10 sm:h-10"

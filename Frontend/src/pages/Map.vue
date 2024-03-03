@@ -30,14 +30,24 @@
           :lat-lng="[memo.latitude, memo.longitude]"
         >
           <l-popup>
-            <div class="flex justify-center">
-              <img class="rounded-md" :src="memo.url" alt="image_memo" />
+            <div class="flex justify-center mt-5 mb-3">
+              <img class="rounded-sm" :src="memo.url" alt="image_memo" />
             </div>
-            <div class="font-bold text-lg">{{ memo.name }}</div>
-            <!--<p>Visité le {{ memo.date_visite }}</p>
-					{{ memo.note }}-->
-            <button @click="deletePlace(memo.id)">Supprimer</button></l-popup
-          >
+            <div class="w-full flex">
+              <div class="inline w-11/12 font-bold text-lg">
+                {{ memo.name }}
+              </div>
+              <!--<p>Visité le {{ memo.date_visite }}</p>
+					  {{ memo.note }}-->
+              <button
+                type="button"
+                @click="deletePlace(memo.id)"
+                class="inline w-1/12 rounded-md text-md text-dark hover:text-danger"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </l-popup>
         </l-marker>
       </l-map>
     </div>
@@ -202,7 +212,7 @@ import { LMap, LMarker, LTileLayer, LPopup } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
 import StarRating from "vue-star-rating";
 import MapDataServices from "../services/MapDataServices";
-import Nav from '/src/components/Nav.vue'
+import Nav from "/src/components/Nav.vue";
 
 export default {
   components: {
@@ -218,11 +228,11 @@ export default {
       zoom: 6,
       MemoVoyage: [],
       formData: {
-          name: "",
-          date_visite: "",
-          note: "",
-          photos: [],
-        },
+        name: "",
+        date_visite: "",
+        note: "",
+        photos: [],
+      },
       latitude: 0,
       longitude: 0,
       currentMarker: null,
@@ -240,10 +250,12 @@ export default {
         this.MemoVoyage.forEach((element) => {
           MapDataServices.getPlaceDetailed(element.id)
             .then((response) => {
-              if(response.data[0].memo.photos && response.data[0].memo.photos.length > 0)
+              if (
+                response.data[0].memo.photos &&
+                response.data[0].memo.photos.length > 0
+              )
                 element.url = response.data[0].memo.photos[0].url;
-              else
-                element.url = '/src/assets/img/caravan.jpg';
+              else element.url = "/src/assets/img/caravan.jpg";
             })
             .catch((e) => {
               console.log(e);
@@ -285,15 +297,15 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
-          if(this.formData.photos.length==0) {
-            this.formData.photos.push('/src/assets/img/caravan.jpg')
+          if (this.formData.photos.length == 0) {
+            this.formData.photos.push("/src/assets/img/caravan.jpg");
           }
           this.MemoVoyage.push({
             id: response.data.id,
             ...this.formData,
             latitude: this.latitude,
             longitude: this.longitude,
-            url: this.formData.photos[0]
+            url: this.formData.photos[0],
           });
           (this.formData.name = ""),
             (this.formData.date_visite = ""),

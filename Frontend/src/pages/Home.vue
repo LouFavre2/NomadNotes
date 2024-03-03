@@ -1,20 +1,20 @@
 <template>
   <Nav></Nav>
   <div
-    class="static w-full md:h-screen bg-base pt-40 p-10 md:pl-40 md:py-20 md:pr-20"
+    class="static w-full md:h-screen bg-base pt-32 p-10 md:pl-40 md:py-20 md:pr-20"
   >
     <div class="grid md:grid-cols-3 gap-10 h-full">
-      <div class="md:col-span-2 relative">
+      <div class="md:col-span-2 relative h-64 sm:h-full">
         <img
           class="rounded-lg h-full"
           src="/src/assets/img/pins.jpg"
           alt="image description"
         />
         <div
-          class="absolute w-3/4 px-4 text-white top-14 left-8"
+          class="absolute w-3/4 px-4 text-white top-8 md:top-14 left-8"
         >
-          <p class="text-xl  sm:text-5xl">Garde les souvenirs de tes voyages</p>
-          <p class="mt-10 text-xl sm:text-xl">Selectionne l'endroit où tu as voyagé, crée une note, ajoute des photos et des détails sur ton expérience, et regarde la liste de tous tes endroits.</p>
+          <p class="text-lg sm:text-5xl">Garde les souvenirs de tes voyages</p>
+          <p class="mt-10 text-sm sm:text-xl">Selectionne l'endroit où tu as voyagé, crée une note, ajoute des photos et des détails sur ton expérience, et regarde la liste de tous tes endroits.</p>
         </div>
       </div>
       <div class="grid grid-rows-2 gap-10">

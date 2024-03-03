@@ -1,9 +1,9 @@
 <template>
   <Nav></Nav>
   <div
-    class="static w-full h-screen bg-base pt-40 p-10 md:pl-40 md:py-20 md:pr-20 overflow-auto"
+    class="static w-full h-screen bg-base pt-32 p-10 md:pl-40 md:py-20 md:pr-20 overflow-auto"
   >
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 flex flex-col">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       <div
         v-for="memo in memos"
         :key="memo.id"
