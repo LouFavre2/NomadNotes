@@ -1,5 +1,4 @@
 <template>
-  <Nav></Nav>
   <router-view></router-view>
 </template>
 
@@ -7,12 +6,10 @@
 import { ref, defineComponent, provide, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { RouterView } from 'vue-router';
-import Nav from '/src/components/Nav.vue'
 
 export default defineComponent({
   name: "App",
   components: {
-    Nav,
     RouterView,
   },
   setup() {
