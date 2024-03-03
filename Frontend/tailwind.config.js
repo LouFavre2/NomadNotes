@@ -33,6 +33,8 @@ export default {
       'primary': '#70DAD3',
       'dark': '#3B4948',
       'accent': '#EC8C6F',
+      'danger': '#b52a2a',
+      'success': '#8feba8'
     },
     borderRadius: {
       'none': '0',

@@ -1,6 +1,6 @@
 <template>
-  <nav
-    class="fixed top-0 z-50 w-screen px-6 py-8 md:hidden rounded-b-md bg-white shadow-lg"
+  <div
+    class="fixed top-0 z-40 w-screen px-6 py-8 md:hidden rounded-b-md bg-white shadow-lg"
   >
     <div class="flex items-center justify-between">
       <router-link
@@ -14,19 +14,14 @@
           type="button"
           class="text-gray-100 hover:text-gray-400 focus:outline-none focus:text-gray-400"
         >
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path
-              fill-rule="evenodd"
-              d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-            ></path>
-          </svg>
+          <img src="/src/assets/img/logo-dark.png" alt="logo" />
         </button>
       </div>
     </div>
 
     <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
     <div
-      class="absolute z-40 top-24 right-1 bg-white rounded-md text-left shadow-lg"
+      class="absolute z-50 top-24 right-1 bg-white rounded-md text-left shadow-lg"
     >
       <ul
         :class="showMenu ? 'flex' : 'hidden'"
@@ -43,7 +38,7 @@
         </li>
       </ul>
     </div>
-  </nav>
+  </div>
 
   <div
     id="logo-sidebar"
@@ -53,7 +48,7 @@
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <a href="https://flowbite.com/" class="flex items-center ps-2.5 mb-5">
         <img
-          src="https://flowbite.com/docs/images/logo.svg"
+          src="/src/assets/img/logo-dark.png"
           class="h-10 sm:h-10"
           alt="Flowbite Logo"
         />
