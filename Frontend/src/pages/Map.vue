@@ -72,7 +72,7 @@ export default {
           name: "",
           date_visite: "",
           note: "",
-          photos: [""]
+          photos: []
         },
       latitude: 0,
       longitude: 0,
@@ -88,8 +88,10 @@ export default {
 
         this.MemoVoyage.forEach(element => {
           MapDataServices.getPlaceDetailed(element.id).then((response) => {
-
+          if(response.data[0].memo.photos && response.data[0].memo.photos.length > 0)
             element.url = response.data[0].memo.photos[0].url;
+          else
+            element.url = '/src/assets/img/caravan.jpg';
           })
           .catch((e) => {
             console.log(e)
