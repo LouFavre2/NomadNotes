@@ -58,7 +58,7 @@
           class="absolute bg-black opacity-70 inset-0 z-40"
         ></div>
         <div
-          class="w-auto max-w-lg h-auto my-10 mx-5 px-5 md:px-10 absolute inset-0 md:mx-auto rounded-xl shadow-lg bg-white z-50"
+          class="w-auto max-w-lg h-auto my-20 mx-5 px-5 md:px-10 absolute inset-0 md:mx-auto rounded-xl shadow-lg bg-white z-50"
         >
           <div class="w-full h-14 relative">
             <button
