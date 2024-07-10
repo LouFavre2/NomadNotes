@@ -28,7 +28,7 @@ class Memo
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $visited_date = null;
 
-    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'memoRelated')]
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'memoRelated', cascade: ['persist'])]
     private Collection $photos;
 
     public function __construct()

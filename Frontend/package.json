@@ -9,10 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "axios": "^1.6.7",
+    "jquery": "^3.7.1",
+    "leaflet": "^1.9.4",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-star-rating": "^2.1.0"
   },
   "devDependencies": {
+    "@types/node": "^20.11.24",
     "@vitejs/plugin-vue": "^5.0.3",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",

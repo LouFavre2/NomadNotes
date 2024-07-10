@@ -1,3 +1,12 @@
+03/03/2024 - Templates
+	Modifications:
+		- Modification des détails sur le design.
+22/02/2024 - Templates
+	Modifications:
+		- Création des templates de Home, Map et Places, ainsi que le composent de la navigation.
+20/02/2024 - Login et Signup
+	Modifications:
+		- Création des templates du login et signup.
 19/02/2024 - Maru
 	Modifications:
 		- Création de deux directoires pour séparer le Front et le Back
@@ -7,3 +16,6 @@
 16/02/2024 - Lou
 	Modifications:
 		- Création du projet base avec Symfony
+23/02/2024 - Lina
+	Modifications:
+		- Intégration de la carte interactive
